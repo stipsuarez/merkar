@@ -119,7 +119,7 @@ Future<void> AboutUsPage(BuildContext context) {
                                   InkWell(
                                     onTap: () {
                                       launch(
-                                          'https://github.com/gaferneira/merkar-flutter');
+                                          'https://github.com/stipsuarez/merkar');
                                     },
                                     child: Text(
                                       Strings.name_repository,

@@ -67,7 +67,7 @@ class Strings {
     "stip.suarez@gmail.com"
   ];
   static const String creators_number = "+57 3152562504";
-  static const String name_repository = "merkar-flutter";
+  static const String name_repository = "merkar";
   static const String writeus="Escríbenos: ";
 
 //LOGIN

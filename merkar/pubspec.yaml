@@ -31,16 +31,46 @@ environment:
 dependencies:
   flutter:
     sdk: flutter
-
-
+  firebase_core: ^2.1.0
+  firebase_auth: ^4.0.2
+  google_sign_in: ^5.0.2
+  cloud_firestore: ^4.0.2
+  in_app_review: ^2.0.1
+  flutter_email_sender: ^5.1.0
+  url_launcher: ^6.0.2
+  collection: ^1.15.0
+  # Service locator
+  get_it: ^6.0.0
+  provider: ^5.0.0
+  # Value equality
+  equatable: ^2.0.0
+  # Functional programming thingies
+  dartz: ^0.10.0-nullsafety.1
+  # Remote API
+  http: ^0.13.0
+  # Local cache
+  shared_preferences: ^2.0.4
+  data_connection_checker: ^0.3.4
   # The following adds the Cupertino Icons font to your application.
   # Use with the CupertinoIcons class for iOS style icons.
   cupertino_icons: ^1.0.2
+  animate_do: ^2.0.0
+  pie_chart: ^5.0.0
+    #firebase_storage: Storage a images of user and then of products
+  firebase_storage: ^11.0.2
+  photo_view: ^0.14.0
+  image_picker: ^0.8.6
+  share_plus: ^6.0.1
+  font_awesome_flutter: ^10.2.1
+  flutter_typeahead: ^4.1.1
+
+
+
 
 dev_dependencies:
   flutter_test:
     sdk: flutter
-
+  mockito: ^5.0.1
   # The "flutter_lints" package below contains a set of recommended lints to
   # encourage good coding practices. The lint set provided by the package is
   # activated in the `analysis_options.yaml` file located at the root of your
@@ -89,3 +119,6 @@ flutter:
   #
   # For details regarding fonts from package dependencies,
   # see https://flutter.dev/custom-fonts/#from-packages
+    # To add assets to your application, add an assets section, like this:
+  assets:
+    - assets/images/

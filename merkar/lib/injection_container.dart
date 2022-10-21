@@ -1,6 +1,8 @@
 import 'package:data_connection_checker/data_connection_checker.dart';
 import 'package:get_it/get_it.dart';
 import 'package:http/http.dart' as http;
+import 'package:merkar/app/pages/main/widgets/more/more_view_model.dart';
+import 'package:merkar/app/pages/purchases/statistics/statistics_view_model.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 import 'app/pages/products/product_list/product_list_view_model.dart';
@@ -35,13 +37,13 @@ Future<void> init() async {
 
   // Data sources
   serviceLocator.registerLazySingleton<LocalDataSource>(
-    () => LocalDataSourceImpl(sharedPreferences: serviceLocator()),
+        () => LocalDataSourceImpl(sharedPreferences: serviceLocator()),
   );
   serviceLocator.registerLazySingleton(() => FirestoreDataSource());
 
   //! Core
   serviceLocator.registerLazySingleton<NetworkInfo>(
-      () => NetworkInfoImpl(serviceLocator()));
+          () => NetworkInfoImpl(serviceLocator()));
 
   //! External
   final sharedPreferences = await SharedPreferences.getInstance();
@@ -52,68 +54,74 @@ Future<void> init() async {
 
 void createViewModels() {
   serviceLocator.registerFactory(() => AuthViewModel(
-        repository: serviceLocator(),
-      ));
+    repository: serviceLocator(),
+  ));
+
+  serviceLocator.registerFactory(() => MoreViewModel(
+    repository: serviceLocator(),
+  ));
 
   serviceLocator.registerFactory(() => LoginViewModel(
-        repository: serviceLocator(),
-      ));
+    repository: serviceLocator(),
+  ));
 
   serviceLocator.registerFactory(() => RegisterViewModel(
-        repository: serviceLocator(),
-      ));
+    repository: serviceLocator(),
+  ));
 
   serviceLocator.registerFactory(() => ResetPasswordViewModel(
-        repository: serviceLocator(),
-      ));
+    repository: serviceLocator(),
+  ));
 
   serviceLocator.registerFactory(() => HomePageViewModel(
-        shoppingListsRepository: serviceLocator(),
-        loginRepository: serviceLocator(),
-      ));
+    shoppingListsRepository: serviceLocator(),
+  ));
 
   serviceLocator.registerFactory(() => ShoppingListViewModel(
       repository: serviceLocator(), purchasesRepository: serviceLocator()));
 
   serviceLocator.registerFactory(
-      () => ProductsListViewModel(repository: serviceLocator()));
+          () => ProductsListViewModel(repository: serviceLocator()));
 
   serviceLocator.registerFactory(() => SelectProductsViewModel(
-        productsRepository: serviceLocator(),
-      ));
+    productsRepository: serviceLocator(),
+  ));
 
   serviceLocator.registerFactory(() => SelectMyProductsViewModel(
       shoppingListRepository: serviceLocator(),
       productsRepository: serviceLocator()));
 
   serviceLocator.registerFactory(
-      () => CreateNewProductsViewModel(productsRepository: serviceLocator()));
+          () => CreateNewProductsViewModel(productsRepository: serviceLocator()));
 
   serviceLocator.registerFactory(() =>
       PurchaseHistoryViewModel(purchaseHistoryRepository: serviceLocator()));
 
   serviceLocator.registerFactory(() => PurchaseHistoryShowInfoViewModel(
       purchaseHistoryRepository: serviceLocator()));
+
+  serviceLocator.registerFactory(() => StatisticsViewModel(
+      purchaseHistoryRepository: serviceLocator()));
 }
 
 void createRepositories() {
   serviceLocator.registerLazySingleton<LoginRepository>(
-    () => LoginRepositoryImpl(
+        () => LoginRepositoryImpl(
         networkInfo: serviceLocator(), firestoreDataSource: serviceLocator()),
   );
 
   serviceLocator.registerLazySingleton<ShoppingListsRepository>(
-    () => ShoppingListsRepositoryImpl(
+        () => ShoppingListsRepositoryImpl(
         networkInfo: serviceLocator(), firestoreDataSource: serviceLocator()),
   );
 
   serviceLocator.registerLazySingleton<ProductsRepository>(
-    () => ProductsRepositoryImpl(
+        () => ProductsRepositoryImpl(
         networkInfo: serviceLocator(), firestoreDataSource: serviceLocator()),
   );
 
   serviceLocator.registerLazySingleton<PurchasesRepository>(
-    () => PurchasesRepositoryImpl(
+        () => PurchasesRepositoryImpl(
         networkInfo: serviceLocator(), firestoreDataSource: serviceLocator()),
   );
 }

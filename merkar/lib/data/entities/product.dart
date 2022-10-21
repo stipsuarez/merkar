@@ -11,16 +11,16 @@ class Product {
   Product({this.name, required this.price, this.category,this.unit}) : super();
 
   factory Product.fromJson(Map<String, dynamic> json) => Product(
-        name: json["name"],
-        price: json["price"],
-        category: json["category"],
-        unit: json["unit"],
-      );
+    name: json["name"],
+    price: json["price"],
+    category: json["category"],
+    unit: json["unit"],
+  );
 
   Map<String, dynamic> toJson() => {
-        "name": name,
-        "price": price,
-        "category": category,
-        "unit": unit,
-      };
+    "name": name,
+    "price": price,
+    "category": category,
+    "unit": unit,
+  };
 }

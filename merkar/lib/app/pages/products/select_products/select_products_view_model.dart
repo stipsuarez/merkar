@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:merkar/data/entities/product.dart';
-import 'package:merkar/data/entities/shopping_list.dart';
-import 'package:merkar/data/repositories/products_repository.dart';
+import '../../../../data/entities/product.dart';
+import '../../../../data/entities/shopping_list.dart';
+import '../../../../data/repositories/products_repository.dart';
 
 class SelectProductsViewModel extends ChangeNotifier {
   final ProductsRepository productsRepository;
@@ -24,7 +24,7 @@ class SelectProductsViewModel extends ChangeNotifier {
       defaultProducts = data;
       error = null;
       updateList();
-      filterDefaultProducts = defaultProducts;
+      //filterDefaultProducts = defaultProducts;
       notifyListeners();
     }, onError: (e) {
       error = e;
@@ -37,6 +37,7 @@ class SelectProductsViewModel extends ChangeNotifier {
       error = null;
       updateList();
       notifyListeners();
+
     }, onError: (e) {
       error = e;
       notifyListeners();
@@ -47,6 +48,7 @@ class SelectProductsViewModel extends ChangeNotifier {
 
   void updateList() {
     if (userProducts != null && defaultProducts != null) {
+
       if (firstLoadTime) {
         firstLoadTime = false;
         removeInitialUserProducts();
@@ -83,15 +85,13 @@ class SelectProductsViewModel extends ChangeNotifier {
     });
 
     defaultProducts = newList;
+    filterDefaultProducts=newList;
   }
 
   Future<void> selectProduct(Product product, bool selected) async {
     if (selected) {
       var newProduct = Product(
-          category: product.category,
-          name: product.name,
-          price: product.price,
-          unit: product.unit);
+          category: product.category, name: product.name, price: product.price,unit: product.unit);
       productsRepository.save(newProduct);
       product.selected = true;
     } else {
@@ -109,8 +109,14 @@ class SelectProductsViewModel extends ChangeNotifier {
   void searchByText(String value) {
     defaultProducts = filterDefaultProducts!
         .where((product) =>
-            product.name!.toLowerCase().contains(value.toLowerCase()))
+        product.name!.toLowerCase().contains(value.toLowerCase()))
         .toList();
+    notifyListeners();
+  }
+
+  Future<void> removeProduct(Product product) async {
+    defaultProducts?.remove(product);
+    productsRepository.remove(product);
     notifyListeners();
   }
 }

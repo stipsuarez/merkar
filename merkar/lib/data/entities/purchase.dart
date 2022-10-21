@@ -16,9 +16,9 @@ class Purchase {
       totalProducts: json["totalProducts"]);
 
   Map<String, dynamic> toJson() => {
-        "name": name,
-        "date": date,
-        "total": total,
-        "totalProducts": totalProducts
-      };
+    "name": name,
+    "date": date,
+    "total": total,
+    "totalProducts": totalProducts
+  };
 }

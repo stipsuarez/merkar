@@ -1,5 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:dartz/dartz.dart';
+import 'package:merkar/app/core/resources/strings.dart';
 
 import '../entities/error/failures.dart';
 import '../entities/list_product.dart';
@@ -23,18 +24,23 @@ class ShoppingListsRepositoryImpl implements ShoppingListsRepository {
 
   @override
   Future<Either<Failure, ShoppingList>> save(ShoppingList item) async {
-    if (item.path != null) {
-      await this.firestoreDataSource.db.doc(item.path!).set(item.toJson());
-    } else {
-      final ref = await firestoreDataSource
-          .getDataDocument()
-          .collection(COLLECTION_SHOPPING_LIST)
-          .add(item.toJson());
-      item
-        ..id = ref.id
-        ..path = ref.path;
+    try{
+      if (item.path != null) {
+        await this.firestoreDataSource.db.doc(item.path!).set(item.toJson());
+      } else {
+        final ref = await firestoreDataSource
+            .getDataDocument()
+            .collection(COLLECTION_SHOPPING_LIST)
+            .add(item.toJson());
+        item
+          ..id = ref.id
+          ..path = ref.path;
+      }
+      return Right(item);}
+    catch(e){
+      print("Error en firebase repository: "+e.toString());
+      return Right(item);
     }
-    return Right(item);
   }
 
   @override
@@ -45,11 +51,11 @@ class ShoppingListsRepositoryImpl implements ShoppingListsRepository {
         .orderBy("name")
         .snapshots()
         .map((querySnapshot) => querySnapshot.docs
-            .map((documentSnapshot) =>
-                ShoppingList.fromJson(documentSnapshot.data())
-                  ..id = documentSnapshot.id
-                  ..path = documentSnapshot.reference.path)
-            .toList());
+        .map((documentSnapshot) =>
+    ShoppingList.fromJson(documentSnapshot.data())
+      ..id = documentSnapshot.id
+      ..path = documentSnapshot.reference.path)
+        .toList()) ;
   }
 
   @override
@@ -81,11 +87,11 @@ class ShoppingListsRepositoryImpl implements ShoppingListsRepository {
         .collection(COLLECTION_PRODUCTS)
         .snapshots()
         .map((querySnapshot) => querySnapshot.docs
-            .map((documentSnapshot) =>
-                ListProduct.fromJson(documentSnapshot.data())
-                  ..id = documentSnapshot.id
-                  ..path = documentSnapshot.reference.path)
-            .toList());
+        .map((documentSnapshot) =>
+    ListProduct.fromJson(documentSnapshot.data())
+      ..id = documentSnapshot.id
+      ..path = documentSnapshot.reference.path)
+        .toList());
   }
 
   @override
@@ -108,5 +114,35 @@ class ShoppingListsRepositoryImpl implements ShoppingListsRepository {
         .doc(product.id)
         .set(product.toJson());
     return Right(product);
+  }
+
+  @override
+  Future<void> updateTotalItems(String total_items, ShoppingList list) async {
+    await firestoreDataSource.db
+        .doc(list.path!)
+        .update({'total_items': total_items});
+  }
+
+  @override
+  Future<void> updateTotalSelected(String total_selected, ShoppingList list) async {
+    await firestoreDataSource.db.
+    doc(list.path!)
+        .update({'total_selected': total_selected});
+  }
+
+  @override
+  Future<void> updateName(String name,ShoppingList list) async {
+    await firestoreDataSource.db.
+    doc(list.path!)
+        .update({'name': name});
+  }
+
+  @override
+  Future<void> updateQuantity(double quantity,String id,ShoppingList list) async {
+    await firestoreDataSource.db.
+    doc(list.path!)
+        .collection(COLLECTION_PRODUCTS)
+        .doc(id)
+        .update({'quantity': quantity});
   }
 }
